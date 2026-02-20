@@ -1,0 +1,12 @@
+# Flutter-related
+**/Flutter/ephemeral/
+**/Pods/
+
+# Xcode-related
+**/dgph
+**/xcuserdata/
+
+.env
+functions/.env
+*.env
+firebase_options.dart

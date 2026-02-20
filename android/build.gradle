@@ -1,0 +1,53 @@
+buildscript {
+    ext.kotlin_version = '1.9.10' // Versi Kotlin yang kompatibel dengan JDK 21
+    
+    repositories {
+        google()
+        mavenCentral()
+    }
+    
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.0' // Versi Gradle plugin yang kompatibel dengan Gradle 8.3
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.15' // Google Services untuk Firebase
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+
+// Konfigurasi untuk semua subprojects
+subprojects {
+    if (project.plugins.hasPlugin('com.android.application') ||
+        project.plugins.hasPlugin('com.android.library')) {
+
+        project.android {
+            compileOptions {
+                sourceCompatibility JavaVersion.VERSION_17
+                targetCompatibility JavaVersion.VERSION_17
+            }
+        }
+
+        if (project.plugins.hasPlugin('kotlin-android')) {
+            project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+                kotlinOptions {
+                    jvmTarget = '17'
+                }
+            }
+        }
+    }
+}
+
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
